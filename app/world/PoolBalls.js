@@ -34,7 +34,7 @@ var PoolBalls = function(world) {
   this.fixDef.friction = config.ball.friction ;
 
   //build racked balls
-  for(var i = 0 ; i < 1 ; i++) {
+  for(var i = 0 ; i < 10 ; i++) {
 
     this.bodyDef.position.x = this.startPosition.x + this.ballPosition[i].x ;
     this.bodyDef.position.y = this.startPosition.y + this.ballPosition[i].y ;
