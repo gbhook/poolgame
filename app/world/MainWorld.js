@@ -60,7 +60,7 @@ mwproto.update = function () {
 
 mwproto.onClickHandler = function(e) {
 
-  this.poolBalls.shootCueBall(e) ;
+  this.poolBalls.shootCueBall(e.clientX, e.clientY) ;
 
 } ;
 

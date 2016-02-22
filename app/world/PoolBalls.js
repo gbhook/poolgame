@@ -76,12 +76,12 @@ pbProto.createCueBall = function () {
 
 };
 
-pbProto.shootCueBall = function(e) {
+pbProto.shootCueBall = function(targetX, targetY) {
 
   this.cueBall.SetAwake(true) ;
   var currentVelocity = this.cueBall.GetLinearVelocity() ;
-  var mouseX = (e.clientX-this.cueBall.GetPosition().x)/30 ;
-  var mouseY = (e.clientY-this.cueBall.GetPosition().y)/30 ;
+  var mouseX = (targetX-this.cueBall.GetPosition().x)/30 ;
+  var mouseY = (targetY-this.cueBall.GetPosition().y)/30 ;
   var newVelocity = {
     x: (mouseX-this.cueBall.GetPosition().x)/config.vectorDivisor,
     y: (mouseY-this.cueBall.GetPosition().y)/config.vectorDivisor
