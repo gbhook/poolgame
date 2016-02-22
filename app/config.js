@@ -11,6 +11,7 @@ var config = {
     friction : 0.1,
     mass:1
     },
+  amountOfBalls:10,
   vectorDivisor:1.3
 
 };

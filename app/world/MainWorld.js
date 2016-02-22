@@ -8,6 +8,7 @@ var PoolTable = require('./PoolTable') ;
 var MainWorld = function () {
 
   this.destroyQueue = [] ;
+  this.destroyCueBall = false ;
 
   this.world = new BX.b2World(new BX.b2Vec2(0, 0), true) ;
   this.poolTable = new PoolTable(this.world) ;
@@ -44,34 +45,17 @@ mwproto.update = function () {
     //this.destroyQueue[i] = null ;
   }
 
+  if(this.destroyCueBall) {
+    this.poolBalls.destroyCueBall() ;
+    this.destroyCueBall = false ;
+  }
+
   this.world.DrawDebugData();
   this.world.ClearForces();
 
 } ;
 
-mwproto.getOffRail = function(ball, rail) {
 
-  var currentVelocity = ball.GetLinearVelocity() ;
-  var newVelocity ;
-
-  switch(rail) {
-    case 'upper' :
-          newVelocity = new BX.b2Vec2(0,(currentVelocity.y*-1))  ;
-          break ;
-    case 'lower' :
-          newVelocity = new BX.b2Vec2(0,(currentVelocity.y*-1))  ;
-          break ;
-    case 'left' :
-          newVelocity = new BX.b2Vec2((currentVelocity.x*-1),0)  ;
-          break ;
-    case 'right' :
-          newVelocity = new BX.b2Vec2((currentVelocity.x*-1),0)  ;
-          break ;
-  }
-
-  console.log(currentVelocity) ;
-  //ball.SetLinearVelocity(newVelocity) ;
-} ;
 
 mwproto.onClickHandler = function(e) {
 
@@ -105,13 +89,15 @@ BX.b2ContactListener.prototype.BeginContact = function(contact) {
     window.world.destroyQueue.push(b.body);
     console.log('TEKCOP!!!');
 
-  } else if (a.name==='ball' && b.name === 'rail') {
+  } else if (a.name==='cueball' && b.name === 'pocket') {
 
-    //window.world.getOffRail(a.body, b.rail) ;
+    window.world.destroyCueBall = true ;
+    console.log("SCRATCH") ;
 
-  } else if (a.name==='rail' && b.name === 'ball') {
+  } else if (a.name==='cueball' && b.name === 'cueball') {
 
-    //window.world.getOffRail(b.body, a.rail) ;
+    window.world.destroyCueBall = true
+    console.log("SCRATCH") ;
 
   }
 } ;
@@ -121,15 +107,6 @@ BX.b2ContactListener.prototype.EndContact = function(contact) {
   var a = contact.GetFixtureA().GetUserData();
   var b = contact.GetFixtureB().GetUserData();
 
-  if (a.name==='ball' && b.name === 'rail') {
-
-    window.world.getOffRail(a.body, b.rail) ;
-
-  } else if (a.name==='rail' && b.name === 'ball') {
-
-    window.world.getOffRail(b.body, a.rail) ;
-
-  }
 
 } ;
 

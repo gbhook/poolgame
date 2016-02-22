@@ -34,7 +34,7 @@ var PoolBalls = function(world) {
   this.fixDef.friction = config.ball.friction ;
 
   //build racked balls
-  for(var i = 0 ; i < 10 ; i++) {
+  for(var i = 0 ; i < config.amountOfBalls ; i++) {
 
     this.bodyDef.position.x = this.startPosition.x + this.ballPosition[i].x ;
     this.bodyDef.position.y = this.startPosition.y + this.ballPosition[i].y ;
@@ -46,6 +46,16 @@ var PoolBalls = function(world) {
     this.balls.push(ball);
   }
 
+  this.createCueBall() ;
+  //this.cueBall = this.world.CreateBody(this.bodyDef) ;
+  //this.cueBall.CreateFixture(this.fixDef);
+
+} ;
+
+var pbProto = PoolBalls.prototype ;
+
+pbProto.createCueBall = function () {
+
   this.bodyDef.type = BX.b2Body.b2_dynamicBody;
   this.bodyDef.awake = true ;
   this.bodyDef.allowSleep = true ;
@@ -53,7 +63,7 @@ var PoolBalls = function(world) {
   this.bodyDef.angularDamping = config.ball.angularDamping ;
   this.bodyDef.restitution = config.ball.restitution;
   this.bodyDef.mass = config.ball.mass ;
-  this.fixDef.shape = new BX.b2CircleShape(0.4);
+  this.fixDef.shape = new BX.b2CircleShape(config.ball.ballRadius);
   this.fixDef.density = config.ball.density ;
   this.fixDef.friction = config.ball.friction ;
 
@@ -63,9 +73,13 @@ var PoolBalls = function(world) {
   var userData = {name:'cueball', body:this.cueBall} ;
   this.fixDef.userData = userData ;
   this.cueBall.CreateFixture(this.fixDef);
-  //this.cueBall = this.world.CreateBody(this.bodyDef) ;
-  //this.cueBall.CreateFixture(this.fixDef);
 
-} ;
+};
+
+pbProto.destroyCueBall = function () {
+  this.world.DestroyBody(this.cueBall) ;
+  this.cueBall = null ;
+  this.createCueBall() ;
+};
 
 module.exports = PoolBalls ;
