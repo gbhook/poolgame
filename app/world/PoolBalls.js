@@ -76,6 +76,23 @@ pbProto.createCueBall = function () {
 
 };
 
+pbProto.shootCueBall = function(e) {
+
+  this.cueBall.SetAwake(true) ;
+  var currentVelocity = this.cueBall.GetLinearVelocity() ;
+  var mouseX = (e.clientX-this.cueBall.GetPosition().x)/30 ;
+  var mouseY = (e.clientY-this.cueBall.GetPosition().y)/30 ;
+  var newVelocity = {
+    x: (mouseX-this.cueBall.GetPosition().x)/config.vectorDivisor,
+    y: (mouseY-this.cueBall.GetPosition().y)/config.vectorDivisor
+  } ;
+
+  currentVelocity.Add(new BX.b2Vec2(newVelocity.x,newVelocity.y)) ;
+
+  this.cueBall.SetLinearVelocity(currentVelocity);
+
+} ;
+
 pbProto.destroyCueBall = function () {
   this.world.DestroyBody(this.cueBall) ;
   this.cueBall = null ;

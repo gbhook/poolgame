@@ -12,7 +12,11 @@ var config = {
     mass:1
     },
   amountOfBalls:10,
-  vectorDivisor:1.3
+  vectorDivisor:1.3,
+
+  messages: {
+    scratch:'You Scratched!'
+  }
 
 };
 

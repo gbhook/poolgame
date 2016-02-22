@@ -4,6 +4,7 @@ var BX = require('../util/Box2DShortCuts');
 var config = require('../config') ;
 var PoolBalls = require('./PoolBalls') ;
 var PoolTable = require('./PoolTable') ;
+var ScoreBoard = require('../scoreboard/Scoreboard') ;
 
 var MainWorld = function () {
 
@@ -13,6 +14,7 @@ var MainWorld = function () {
   this.world = new BX.b2World(new BX.b2Vec2(0, 0), true) ;
   this.poolTable = new PoolTable(this.world) ;
   this.poolBalls = new PoolBalls(this.world) ;
+  this.scoreboard = new ScoreBoard() ;
 
   //setup debug draw
   var debugDraw = new BX.b2DebugDraw();
@@ -42,11 +44,12 @@ mwproto.update = function () {
   for(var i in this.destroyQueue) {
 
     this.world.DestroyBody(this.destroyQueue[i]) ;
-    //this.destroyQueue[i] = null ;
+
   }
 
   if(this.destroyCueBall) {
     this.poolBalls.destroyCueBall() ;
+    this.scoreboard.changeMessage(config.messages.scratch) ;
     this.destroyCueBall = false ;
   }
 
@@ -55,22 +58,9 @@ mwproto.update = function () {
 
 } ;
 
-
-
 mwproto.onClickHandler = function(e) {
 
-  this.poolBalls.cueBall.SetAwake(true) ;
-  var currentVelocity = this.poolBalls.cueBall.GetLinearVelocity() ;
-  var mouseX = (e.clientX-this.poolBalls.cueBall.GetPosition().x)/30 ;
-  var mouseY = (e.clientY-this.poolBalls.cueBall.GetPosition().y)/30 ;
-  var newVelocity = {
-    x: (mouseX-this.poolBalls.cueBall.GetPosition().x)/config.vectorDivisor,
-    y: (mouseY-this.poolBalls.cueBall.GetPosition().y)/config.vectorDivisor
-  } ;
-
-  currentVelocity.Add(new BX.b2Vec2(newVelocity.x,newVelocity.y)) ;
-
-  this.poolBalls.cueBall.SetLinearVelocity(currentVelocity);
+  this.poolBalls.shootCueBall(e) ;
 
 } ;
 
