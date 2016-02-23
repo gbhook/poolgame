@@ -31,7 +31,7 @@ var config = {
 
   tests: {
     lint: {
-      src: ['!./app/**/*.js', '!app/vendor/**/*.js', './gulp/**/*.js', './tests/**/*.js']
+      src: ['./app/**/*.js', '!app/vendor/**/*.js', './gulp/**/*.js', './tests/**/*.js']
     },
     mocha: {
       src: ['./tests/**/*.js'],

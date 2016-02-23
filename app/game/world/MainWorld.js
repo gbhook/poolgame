@@ -5,6 +5,7 @@ var config = require('../config') ;
 var PoolBalls = require('./PoolBalls') ;
 var PoolTable = require('./PoolTable') ;
 var ScoreBoard = require('../scoreboard/Scoreboard') ;
+var GameState = require('../GameState') ;
 
 var MainWorld = function () {
 
@@ -17,6 +18,8 @@ var MainWorld = function () {
   this.poolTable = new PoolTable(this.world) ;
   this.poolBalls = new PoolBalls(this.world, this.context) ;
   this.scoreboard = new ScoreBoard() ;
+  this.gameState = new GameState(this) ;
+
 
   //setup debug draw
   var debugDraw = new BX.b2DebugDraw();
@@ -54,13 +57,14 @@ mwproto.update = function () {
 
   if(this.destroyCueBall) {
     this.poolBalls.destroyCueBall() ;
-    this.scoreboard.changeMessage(config.messages.scratch) ;
+
     this.destroyCueBall = false ;
   }
 
   this.world.DrawDebugData();
   this.world.ClearForces();
   this.poolBalls.update() ;
+  this.gameState.update() ;
   //this.context.clearRect(0, 0, config.canvasWidth, config.canvasHeight);
 
 } ;

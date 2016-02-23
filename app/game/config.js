@@ -12,17 +12,22 @@ var config = {
     mass:1
     },
   amountOfBalls:10,
+  velocityThreshold:0.05 ,
   vectorDivisor:1.1,
   canvasWidth:950,
   canvasHeight:510,
 
   messages: {
-    scratch:'You Scratched!'
+    scratch:'you scratched!',
+    ready: 'its your turn!',
+    shooting: 'BOOM',
+    sank: 'Score!'
+
   },
 
   gameState : {
-    playerOneReady:'playerOneReady',
-    playerTwoReady:'playerTwoReady',
+    playerReady:'playerReady',
+    shooting:'shooting',
 
 
   }

@@ -24,6 +24,8 @@ var PoolBalls = function(world, context) {
     {x:config.ball.ballRadius*3, y:config.ball.ballRadius*3},
   ] ;
 
+  this.ballsMoving = false ;
+
   this.bodyDef = new BX.b2BodyDef;
   this.fixDef = new BX.b2FixtureDef;
   this.bodyDef.type = BX.b2Body.b2_dynamicBody;
@@ -60,22 +62,47 @@ pbProto.update = function () {
 
   if(!this.ballImage) {return;}
 
-  var pos = this.cueBall.GetPosition();
+  var velocity ;
+  var pos ;
+  var isMoving = 0 ;
 
-  this.context.save();
-  this.context.translate(pos.x * 30, pos.y * 30);
-  this.context.rotate(this.cueBall.GetAngle());
-  this.context.drawImage(this.cueImage, -12, -12);
-  this.context.restore();
+  if(this.cueBall) {
 
-  for (var i = 0 ; i < this.balls.length ; i++ ) {
-    pos = this.balls[i].GetPosition();
-    var velocity = this.balls[i].GetLinearVelocity() ;
+    pos = this.cueBall.GetPosition();
+    velocity = this.cueBall.GetLinearVelocity();
+
+    if(Math.abs(velocity.x) > config.velocityThreshold && Math.abs(velocity.y) > config.velocityThreshold) {
+      isMoving++ ;
+    }
+
     this.context.save();
     this.context.translate(pos.x * 30, pos.y * 30);
-    this.context.rotate(this.balls[i].GetAngle());
+    this.context.rotate(this.cueBall.GetAngle());
+    this.context.drawImage(this.cueImage, -12, -12);
+    this.context.restore();
+  }
+
+
+  for (var i = 0 ; i < this.balls.length ; i++ ) {
+    var ball = this.balls[i] ;
+    pos = ball.GetPosition();
+    velocity = ball.GetLinearVelocity() ;
+
+    if(velocity.x > config.velocityThreshold && velocity.y > config.velocityThreshold) {
+      isMoving++ ;
+
+    }
+    this.context.save();
+    this.context.translate(pos.x * 30, pos.y * 30);
+    this.context.rotate(ball.GetAngle());
     this.context.drawImage(this.ballImages[0], -12, -12);
     this.context.restore();
+  }
+
+  if(isMoving>0) {
+    this.ballsMoving = true ;
+  } else {
+    this.ballsMoving = false ;
   }
 
 } ;
@@ -92,6 +119,7 @@ pbProto.loadImages = function () {
 } ;
 
 pbProto.createCueBall = function () {
+
 
   this.bodyDef.type = BX.b2Body.b2_dynamicBody;
   this.bodyDef.awake = true ;
@@ -133,7 +161,6 @@ pbProto.shootCueBall = function(targetX, targetY) {
 pbProto.destroyCueBall = function () {
   this.world.DestroyBody(this.cueBall) ;
   this.cueBall = null ;
-  this.createCueBall() ;
 };
 
 pbProto.destroyBall = function (ball) {
