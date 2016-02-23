@@ -12,8 +12,10 @@ var MainWorld = function () {
   this.destroyCueBall = false ;
 
   this.world = new BX.b2World(new BX.b2Vec2(0, 0), true) ;
+  this.context = document.getElementById("canvas").getContext("2d");
+
   this.poolTable = new PoolTable(this.world) ;
-  this.poolBalls = new PoolBalls(this.world) ;
+  this.poolBalls = new PoolBalls(this.world, this.context) ;
   this.scoreboard = new ScoreBoard() ;
 
   //setup debug draw
@@ -43,9 +45,12 @@ mwproto.update = function () {
 
   for(var i in this.destroyQueue) {
 
+    this.poolBalls.destroyBall(this.destroyQueue[i]) ;
     this.world.DestroyBody(this.destroyQueue[i]) ;
 
   }
+
+  this.destroyQueue=[] ;
 
   if(this.destroyCueBall) {
     this.poolBalls.destroyCueBall() ;
@@ -55,6 +60,8 @@ mwproto.update = function () {
 
   this.world.DrawDebugData();
   this.world.ClearForces();
+  this.poolBalls.update() ;
+  //this.context.clearRect(0, 0, config.canvasWidth, config.canvasHeight);
 
 } ;
 

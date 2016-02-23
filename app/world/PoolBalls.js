@@ -3,10 +3,13 @@
 var BX = require('../util/Box2DShortCuts') ;
 var config = require('../config') ;
 
-var PoolBalls = function(world) {
+var PoolBalls = function(world, context) {
 
   this.world = world ;
+  this.context = context ;
+  this.ballImage ;
   this.balls = [] ;
+  this.ballImages = [] ;
   this.startPosition = {x:20, y:8} ;
   this.ballPosition = [
     {x:0, y:0},
@@ -46,13 +49,47 @@ var PoolBalls = function(world) {
     this.balls.push(ball);
   }
 
+  this.loadImages() ;
   this.createCueBall() ;
-  //this.cueBall = this.world.CreateBody(this.bodyDef) ;
-  //this.cueBall.CreateFixture(this.fixDef);
 
 } ;
 
 var pbProto = PoolBalls.prototype ;
+
+pbProto.update = function () {
+
+  if(!this.ballImage) {return;}
+
+  var pos = this.cueBall.GetPosition();
+
+  this.context.save();
+  this.context.translate(pos.x * 30, pos.y * 30);
+  this.context.rotate(this.cueBall.GetAngle());
+  this.context.drawImage(this.cueImage, -12, -12);
+  this.context.restore();
+
+  for (var i = 0 ; i < this.balls.length ; i++ ) {
+    pos = this.balls[i].GetPosition();
+
+    this.context.save();
+    this.context.translate(pos.x * 30, pos.y * 30);
+    this.context.rotate(this.balls[i].GetAngle());
+    this.context.drawImage(this.ballImages[0], -12, -12);
+    this.context.restore();
+  }
+
+} ;
+
+pbProto.loadImages = function () {
+
+  this.cueImage = new Image() ;
+  this.cueImage.src = 'images/balls/cue.png' ;
+  this.ballImage = new Image() ;
+  this.ballImage.src = 'images/balls/one.png' ;
+
+  this.ballImages.push(this.ballImage) ;
+
+} ;
 
 pbProto.createCueBall = function () {
 
@@ -98,5 +135,16 @@ pbProto.destroyCueBall = function () {
   this.cueBall = null ;
   this.createCueBall() ;
 };
+
+pbProto.destroyBall = function (ball) {
+
+  for(var i=0 ; i<this.balls.length ; i++ ) {
+    if(ball===this.balls[i]) {
+      var deleteBall = this.balls.splice(i,1) ;
+
+    }
+  }
+
+} ;
 
 module.exports = PoolBalls ;
