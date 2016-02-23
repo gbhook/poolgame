@@ -1,10 +1,7 @@
 'use strict';
 
-var config = require('./config');
-var MainWorld = require('./world/MainWorld');
 
-
-console.log(config);
+var MainWorld = require('./game/world/MainWorld');
 
 
 window.world = new MainWorld() ;

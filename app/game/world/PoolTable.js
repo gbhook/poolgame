@@ -1,6 +1,6 @@
 'use strict';
 
-var BX = require('../util/Box2DShortCuts') ;
+var BX = require('../../util/Box2DShortCuts') ;
 var config = require('../config') ;
 
 var PoolTable = function(world) {

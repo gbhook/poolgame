@@ -1,6 +1,6 @@
 'use strict' ;
 
-var BX = require('../util/Box2DShortCuts') ;
+var BX = require('../../util/Box2DShortCuts') ;
 var config = require('../config') ;
 
 var PoolBalls = function(world, context) {
@@ -70,7 +70,7 @@ pbProto.update = function () {
 
   for (var i = 0 ; i < this.balls.length ; i++ ) {
     pos = this.balls[i].GetPosition();
-
+    var velocity = this.balls[i].GetLinearVelocity() ;
     this.context.save();
     this.context.translate(pos.x * 30, pos.y * 30);
     this.context.rotate(this.balls[i].GetAngle());

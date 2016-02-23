@@ -1,6 +1,6 @@
 'use strict';
 
-var BX = require('../util/Box2DShortCuts');
+var BX = require('../../util/Box2DShortCuts');
 var config = require('../config') ;
 var PoolBalls = require('./PoolBalls') ;
 var PoolTable = require('./PoolTable') ;
@@ -93,7 +93,7 @@ BX.b2ContactListener.prototype.BeginContact = function(contact) {
 
   } else if (a.name==='cueball' && b.name === 'cueball') {
 
-    window.world.destroyCueBall = true
+    window.world.destroyCueBall = true;
     console.log("SCRATCH") ;
 
   }
