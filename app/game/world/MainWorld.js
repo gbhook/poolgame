@@ -71,7 +71,12 @@ mwproto.update = function () {
 
 mwproto.onClickHandler = function(e) {
 
-  this.poolBalls.shootCueBall(e.clientX, e.clientY) ;
+  if(this.gameState.getState()===config.gameState.playerReady)
+  {
+    this.poolBalls.shootCueBall(e.clientX, e.clientY) ;
+  } else {
+    console.log('No Shot - Balls in Motion') ;
+  }
 
 } ;
 

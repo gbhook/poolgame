@@ -21,16 +21,21 @@ gsProto.getState = function () {
 
 gsProto.setState = function (state) {
 
+  console.log('====STATE SET====') ;
+  console.log(state + ' ' + this.getActivePlayer().name) ;
+  console.log('=================') ;
+
   this.state = state ;
 
   switch(this.state) {
 
     case  config.gameState.playerReady :
-          this.mainWorld.scoreboard.changeMessage(this.getActivePlayer().name + ', ' + config.messages.ready) ;
+          //this.mainWorld.scoreboard.changeMessage(this.getActivePlayer().name + ', ' + config.messages.ready) ;
+          this.mainWorld.poolBalls.createCueBall() ;
           break ;
 
     case config.gameState.shooting :
-          this.mainWorld.scoreboard.changeMessage(this.getActivePlayer().name + ', ' + config.messages.shooting) ;
+          //this.mainWorld.scoreboard.changeMessage(this.getActivePlayer().name + ', ' + config.messages.shooting) ;
           break ;
 
   }

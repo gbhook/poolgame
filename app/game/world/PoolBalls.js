@@ -120,6 +120,7 @@ pbProto.loadImages = function () {
 
 pbProto.createCueBall = function () {
 
+  if(this.cueBall) return ;
 
   this.bodyDef.type = BX.b2Body.b2_dynamicBody;
   this.bodyDef.awake = true ;
